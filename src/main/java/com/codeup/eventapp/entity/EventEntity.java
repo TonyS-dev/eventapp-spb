@@ -1,5 +1,7 @@
 package com.codeup.eventapp.entity;
 
+import org.hibernate.annotations.SoftDelete;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "events")
+@SoftDelete
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class EventEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,0 +1,17 @@
+# Dockerfile de desarrollo (opcional, solo si prefieres usar build en lugar de imagen Maven directa)
+FROM maven:3.9.0-eclipse-temurin-17
+
+WORKDIR /app
+
+# Copiamos el pom.xml primero para cachear dependencias
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# El código fuente se montará como volumen, no se copia en la imagen
+# Esto permite hot reloading
+
+# Exponemos el puerto de la app y el puerto de LiveReload
+EXPOSE 8080 35729
+
+# Ejecutamos Maven en modo watch (spring-boot:run tiene hot reload automático con devtools)
+CMD ["mvn", "spring-boot:run"]

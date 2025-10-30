@@ -1,0 +1,56 @@
+services:
+  # Servicio de base de datos postgres
+  postgres:
+    image: postgres:15
+    container_name: postgres-db-dev
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Servicio de la aplicación Spring Boot en modo desarrollo
+  app:
+    image: maven:3.9.0-eclipse-temurin-17
+    container_name: ${APP_NAME}-dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+      - "35729:35729"  # Puerto para LiveReload (devtools)
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATABASE}:${DB_PORT}/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      SPRING_JPA_SHOW_SQL: "${SPRING_JPA_SHOW_SQL}"
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
+    volumes:
+      # Monta tu código fuente para hot reload
+      - ./src:/app/src
+      - ./pom.xml:/app/pom.xml
+      # Cachea las dependencias de Maven para no descargarlas cada vez
+      - maven_cache:/root/.m2
+    working_dir: /app
+    command: mvn spring-boot:run
+    restart: unless-stopped
+
+volumes:
+  postgres_data_dev:
+  maven_cache:

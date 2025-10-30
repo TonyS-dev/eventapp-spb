@@ -10,6 +10,8 @@ public interface IEventService {
     EventResponse create(EventRequest req);
     EventResponse get(Long id);
     Page<EventResponse> list(Pageable pageable);
+    Page<EventResponse> listDeleted(Pageable pageable);
     EventResponse update(Long id, EventRequest req);
     void delete(Long id);
+    void restore(Long id);
 }
