@@ -3,8 +3,8 @@ package com.codeup.eventapp.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.codeup.eventapp.web.dto.EventRequest;
-import com.codeup.eventapp.web.dto.EventResponse;
+import com.codeup.eventapp.web.dto.event.EventRequest;
+import com.codeup.eventapp.web.dto.event.EventResponse;
 
 public interface IEventService {
     EventResponse create(EventRequest req);

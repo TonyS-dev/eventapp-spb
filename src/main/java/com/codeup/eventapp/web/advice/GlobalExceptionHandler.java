@@ -55,8 +55,8 @@ public class GlobalExceptionHandler {
         pd.setType(URI.create("/errors/validation"));
         pd.setTitle("Validation error");
         pd.setDetail("One or more fields are invalid");
-    pd.setProperty(TRACE, Trace.currentId());
-    pd.setProperty(INSTANCE, req.getRequestURI());
+        pd.setProperty(TRACE, Trace.currentId());
+        pd.setProperty(INSTANCE, req.getRequestURI());
 
         List<Map<String, Object>> errors = ex.getBindingResult()
                 .getFieldErrors().stream()
@@ -76,6 +76,17 @@ public class GlobalExceptionHandler {
         pd.setType(URI.create("/errors/bad-request"));
         pd.setTitle("Malformed request");
         pd.setDetail("The request body could not be parsed");
+        pd.setProperty(TRACE, Trace.currentId());
+        pd.setProperty(INSTANCE, req.getRequestURI());
+        return pd;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail illegalArgument(IllegalArgumentException ex, HttpServletRequest req) {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pd.setType(URI.create("/errors/bad-request"));
+        pd.setTitle("Invalid request");
+        pd.setDetail(ex.getMessage());
         pd.setProperty(TRACE, Trace.currentId());
         pd.setProperty(INSTANCE, req.getRequestURI());
         return pd;

@@ -45,10 +45,17 @@ services:
       # Monta tu código fuente para hot reload
       - ./src:/app/src
       - ./pom.xml:/app/pom.xml
+      - ./dev-watch.sh:/app/dev-watch.sh
       # Cachea las dependencias de Maven para no descargarlas cada vez
       - maven_cache:/root/.m2
     working_dir: /app
-    command: mvn spring-boot:run
+    command: >
+      bash -c "
+      echo '🚀 Iniciando en modo desarrollo con hot-reload automático...' &&
+      mvn compile -q &&
+      (bash /app/dev-watch.sh &) &&
+      mvn spring-boot:run -Dspring-boot.run.fork=false
+      "
     restart: unless-stopped
 
 volumes:

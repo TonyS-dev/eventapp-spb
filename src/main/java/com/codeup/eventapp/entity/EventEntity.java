@@ -1,5 +1,7 @@
 package com.codeup.eventapp.entity;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.SoftDelete;
 
 import jakarta.persistence.Column;
@@ -26,7 +28,7 @@ public class EventEntity {
     @Column(nullable = false, unique = true)
     private String name;
     private String location;
-    private String date;
+    private LocalDateTime date;
     
     @Column(length = 1000)
     private String description;

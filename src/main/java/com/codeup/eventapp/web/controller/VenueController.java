@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.codeup.eventapp.service.IEventService;
-import com.codeup.eventapp.web.dto.event.EventRequest;
-import com.codeup.eventapp.web.dto.event.EventResponse;
+import com.codeup.eventapp.service.IVenueService;
+import com.codeup.eventapp.web.dto.venue.VenueRequest;
+import com.codeup.eventapp.web.dto.venue.VenueResponse;
 import com.codeup.eventapp.web.response.AppResponse;
 import com.codeup.eventapp.util.Trace;
 
@@ -36,21 +36,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/api/venues")
 @RequiredArgsConstructor
-@Tag(name = "Events", description = "Event management APIs")
-public class EventController {
+@Tag(name = "Venues", description = "Venue management APIs")
+public class VenueController {
 
-    private final IEventService service;
+    private final IVenueService service;
 
     @Operation(
-        summary = "Create a new event", 
-        description = "Creates a new event with the provided details"
+        summary = "Create a new venue", 
+        description = "Creates a new venue with the provided details"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "201", 
-            description = "Event created successfully",
+            description = "Venue created successfully",
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = AppResponse.class),
@@ -59,19 +59,12 @@ public class EventController {
                     {
                       "data": {
                         "id": 1,
-                        "name": "New Event",
-                        "location": "Downtown Hall",
-                        "date": "2025-12-15T20:00:00",
-                        "description": "A fun event",
-                        "venue": {
-                          "id": 1,
-                          "name": "Grand Hall",
-                          "address": "123 Main St",
-                          "capacity": 500
-                        }
+                        "name": "New Venue",
+                        "address": "456 Oak Ave",
+                        "capacity": 200
                       },
                       "meta": {
-                        "message": "Event created successfully",
+                        "message": "Venue created successfully",
                         "traceId": "...",
                         "apiVersion": "v1"
                       }
@@ -81,19 +74,19 @@ public class EventController {
             )
         ),
         @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Event name already exists", content = @Content)
+        @ApiResponse(responseCode = "409", description = "Venue name already exists", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<AppResponse<EventResponse>> crear(
-        @Valid @RequestBody EventRequest req,
+    public ResponseEntity<AppResponse<VenueResponse>> crear(
+        @Valid @RequestBody VenueRequest req,
             UriComponentsBuilder uri) {
 
-        EventResponse res = service.create(req);
-        URI location = uri.path("/api/events/{id}")
+        VenueResponse res = service.create(req);
+        URI location = uri.path("/api/venues/{id}")
                 .buildAndExpand(res.id()).toUri();
 
         var meta = new AppResponse.Meta(
-                "Event created successfully",
+                "Venue created successfully",
                 Trace.currentId(),
                 "v1",
                 null
@@ -104,13 +97,13 @@ public class EventController {
     }
     
     @Operation(
-        summary = "List all events", 
-        description = "Retrieves a paginated list of all active events"
+        summary = "List all venues", 
+        description = "Retrieves a paginated list of all active venues"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", 
-            description = "List of events retrieved successfully",
+            description = "List of venues retrieved successfully",
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = AppResponse.class),
@@ -120,16 +113,11 @@ public class EventController {
                       "data": [
                         {
                           "id": 1,
-                          "name": "Concert Night",
-                          "location": "Central Park",
-                          "date": "2025-12-15T20:00:00",
-                          "description": "An amazing concert",
-                          "venue": {
-                            "id": 1,
-                            "name": "Grand Hall",
-                            "address": "123 Main St",
-                            "capacity": 500
-                          }
+                          "name": "Grand Hall",
+                          "address": "123 Main St",
+                          "city": "Metropolis",
+                          "state": "NY",
+                          "capacity": 500
                         }
                       ],
                       "meta": {
@@ -150,20 +138,20 @@ public class EventController {
         )
     })
     @GetMapping
-    public ResponseEntity<AppResponse<List<EventResponse>>> list(
+    public ResponseEntity<AppResponse<List<VenueResponse>>> list(
         @Parameter(description = "Pagination parameters") Pageable pageable) {
-        Page<EventResponse> page = service.list(pageable);
+        Page<VenueResponse> page = service.list(pageable);
         return ResponseEntity.ok(AppResponse.withPage(page.getContent(), page));
     }
 
     @Operation(
-        summary = "List deleted events", 
-        description = "Retrieves a paginated list of soft-deleted events"
+        summary = "List deleted venues", 
+        description = "Retrieves a paginated list of soft-deleted venues"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", 
-            description = "List of deleted events retrieved successfully",
+            description = "List of deleted venues retrieved successfully",
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = AppResponse.class)
@@ -171,20 +159,20 @@ public class EventController {
         )
     })
     @GetMapping("/deleted")
-    public ResponseEntity<AppResponse<List<EventResponse>>> listDeleted(
+    public ResponseEntity<AppResponse<List<VenueResponse>>> listDeleted(
         @Parameter(description = "Pagination parameters") Pageable pageable) {
-        Page<EventResponse> page = service.listDeleted(pageable);
+        Page<VenueResponse> page = service.listDeleted(pageable);
         return ResponseEntity.ok(AppResponse.withPage(page.getContent(), page));
     }    
 
     @Operation(
-        summary = "Get event by ID", 
-        description = "Retrieves a specific event by its ID"
+        summary = "Get venue by ID", 
+        description = "Retrieves a specific venue by its ID"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", 
-            description = "Event found",
+            description = "Venue found",
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = AppResponse.class),
@@ -193,16 +181,11 @@ public class EventController {
                     {
                       "data": {
                         "id": 1,
-                        "name": "Concert Night",
-                        "location": "Central Park",
-                        "date": "2025-12-15T20:00:00",
-                        "description": "An amazing concert",
-                        "venue": {
-                          "id": 1,
-                          "name": "Grand Hall",
-                          "address": "123 Main St",
-                          "capacity": 500
-                        }
+                        "name": "Grand Hall",
+                        "address": "123 Main St",
+                        "city": "Metropolis",
+                        "state": "NY",
+                        "capacity": 500
                       },
                       "meta": {
                         "message": "OK",
@@ -216,7 +199,7 @@ public class EventController {
         ),
         @ApiResponse(
             responseCode = "404", 
-            description = "Event not found",
+            description = "Venue not found",
             content = @Content(
                 mediaType = "application/json",
                 examples = @ExampleObject(
@@ -225,8 +208,8 @@ public class EventController {
                         "timestamp": "2023-10-27T10:30:00",
                         "status": 404,
                         "error": "Not Found",
-                        "message": "Event with id 999 not found",
-                        "path": "/api/events/999"
+                        "message": "Venue with id 999 not found",
+                        "path": "/api/venues/999"
                     }
                     """
                 )
@@ -234,71 +217,70 @@ public class EventController {
         )
     })
     @GetMapping("/{id}")
-    public ResponseEntity<AppResponse<EventResponse>> get(
-        @Parameter(description = "Event ID") @PathVariable Long id) {
+    public ResponseEntity<AppResponse<VenueResponse>> get(
+        @Parameter(description = "Venue ID") @PathVariable Long id) {
         return ResponseEntity.ok(AppResponse.success(service.get(id)));
     }
 
     @Operation(
-        summary = "Update event", 
-        description = "Updates an existing event with new details"
+        summary = "Update venue", 
+        description = "Updates an existing venue with new details"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", 
-            description = "Event updated successfully",
+            description = "Venue updated successfully",
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = AppResponse.class)
             )
         ),
-        @ApiResponse(responseCode = "404", description = "Event not found", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Event name already exists", content = @Content)
+        @ApiResponse(responseCode = "404", description = "Venue not found", content = @Content),
+        @ApiResponse(responseCode = "409", description = "Venue name already exists", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<AppResponse<EventResponse>> update(
-        @Parameter(description = "Event ID") @PathVariable Long id, 
-        @Valid @RequestBody EventRequest req) {
-        EventResponse res = service.update(id, req);
+    public ResponseEntity<AppResponse<VenueResponse>> update(
+        @Parameter(description = "Venue ID") @PathVariable Long id, 
+        @Valid @RequestBody VenueRequest req) {
+        VenueResponse res = service.update(id, req);
         return ResponseEntity.ok(AppResponse.success(res));
     }
 
     @Operation(
-        summary = "Delete event", 
-        description = "Soft deletes an event by its ID"
+        summary = "Delete venue", 
+        description = "Soft deletes a venue by its ID"
     )
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Event deleted successfully", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Event not found", content = @Content)
+        @ApiResponse(responseCode = "204", description = "Venue deleted successfully", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Venue not found", content = @Content)
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
-        @Parameter(description = "Event ID") @PathVariable Long id) {
+        @Parameter(description = "Venue ID") @PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(
-        summary = "Restore deleted event", 
-        description = "Restores a soft-deleted event"
+        summary = "Restore deleted venue", 
+        description = "Restores a soft-deleted venue"
     )
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", 
-            description = "Event restored successfully",
+            description = "Venue restored successfully",
             content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = AppResponse.class)
             )
         ),
-        @ApiResponse(responseCode = "404", description = "Deleted event not found", content = @Content)
+        @ApiResponse(responseCode = "404", description = "Deleted venue not found", content = @Content)
     })
     @PutMapping("/{id}/restore")
-    public ResponseEntity<AppResponse<Void>> restore(
-        @Parameter(description = "Event ID") @PathVariable Long id) {
+    public ResponseEntity<AppResponse<Void>> restore(@PathVariable Long id) {
         service.restore(id);
         var meta = new AppResponse.Meta(
-                "Event restored",
+                "Venue restored",
                 Trace.currentId(),
                 "v1",
                 null
