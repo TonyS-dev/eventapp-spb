@@ -13,6 +13,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.codeup.eventapp.exception.ConflictException;
 import com.codeup.eventapp.exception.NotFoundException;
@@ -87,6 +88,18 @@ public class GlobalExceptionHandler {
         pd.setType(URI.create("/errors/bad-request"));
         pd.setTitle("Invalid request");
         pd.setDetail(ex.getMessage());
+        pd.setProperty(TRACE, Trace.currentId());
+        pd.setProperty(INSTANCE, req.getRequestURI());
+        return pd;
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ProblemDetail noResourceFound(NoResourceFoundException ex, HttpServletRequest req) {
+        log.debug("Static resource not found: {}", req.getRequestURI());
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        pd.setType(URI.create("/errors/not-found"));
+        pd.setTitle("Resource not found");
+        pd.setDetail("The requested resource does not exist");
         pd.setProperty(TRACE, Trace.currentId());
         pd.setProperty(INSTANCE, req.getRequestURI());
         return pd;
