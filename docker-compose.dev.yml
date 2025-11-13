@@ -1,5 +1,5 @@
 services:
-  # Servicio de base de datos postgres
+  # Postgres database service
   postgres:
     image: postgres:15
     container_name: postgres-db-dev
@@ -20,7 +20,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Servicio de la aplicación Spring Boot en modo desarrollo
+  # Spring Boot application service in development mode
   app:
     image: maven:3.9.0-eclipse-temurin-17
     container_name: ${APP_NAME}-dev
@@ -29,7 +29,7 @@ services:
         condition: service_healthy
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
-      - "35729:35729"  # Puerto para LiveReload (devtools)
+      - "35729:35729"  # Port for LiveReload (devtools)
     env_file:
       - .env
     environment:
@@ -42,16 +42,16 @@ services:
       SPRING_DEVTOOLS_RESTART_ENABLED: "true"
       SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
     volumes:
-      # Monta tu código fuente para hot reload
+      # Mount your source code for hot reload
       - ./src:/app/src
       - ./pom.xml:/app/pom.xml
       - ./dev-watch.sh:/app/dev-watch.sh
-      # Cachea las dependencias de Maven para no descargarlas cada vez
+      # Cache Maven dependencies to avoid downloading them every time
       - maven_cache:/root/.m2
     working_dir: /app
     command: >
       bash -c "
-      echo '🚀 Iniciando en modo desarrollo con hot-reload automático...' &&
+      echo '🚀 Starting in development mode with automatic hot-reload...' &&
       mvn compile -q &&
       (bash /app/dev-watch.sh &) &&
       mvn spring-boot:run -Dspring-boot.run.fork=false
