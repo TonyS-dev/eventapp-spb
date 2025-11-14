@@ -14,11 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.codeup.eventapp.domain.model.Venue;
-import com.codeup.eventapp.domain.ports.in.*;
-import com.codeup.eventapp.infrastructure.mappers.VenueDtoMapper;
-import com.codeup.eventapp.infrastructure.web.dto.venue.VenueRequest;
-import com.codeup.eventapp.infrastructure.web.dto.venue.VenueResponse;
+import com.codeup.eventapp.domain.ports.in.venues.CreateVenueUseCase;
+import com.codeup.eventapp.domain.ports.in.venues.DeleteVenueUseCase;
+import com.codeup.eventapp.domain.ports.in.venues.GetVenueUseCase;
+import com.codeup.eventapp.domain.ports.in.venues.ListDeletedVenuesUseCase;
+import com.codeup.eventapp.domain.ports.in.venues.ListVenuesUseCase;
+import com.codeup.eventapp.domain.ports.in.venues.RestoreVenueUseCase;
+import com.codeup.eventapp.domain.ports.in.venues.UpdateVenueUseCase;
+import com.codeup.eventapp.infrastructure.web.dto.venues.VenueRequest;
+import com.codeup.eventapp.infrastructure.web.dto.venues.VenueResponse;
 import com.codeup.eventapp.infrastructure.web.response.AppResponse;
+import com.codeup.eventapp.infrastructure.mappers.venues.VenueDtoMapper;
 import com.codeup.eventapp.infrastructure.util.Trace;
 
 import io.swagger.v3.oas.annotations.Operation;
