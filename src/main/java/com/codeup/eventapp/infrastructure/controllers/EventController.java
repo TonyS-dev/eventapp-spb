@@ -14,11 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.codeup.eventapp.domain.model.Event;
-import com.codeup.eventapp.domain.ports.in.*;
-import com.codeup.eventapp.infrastructure.mappers.EventDtoMapper;
-import com.codeup.eventapp.infrastructure.web.dto.event.EventRequest;
-import com.codeup.eventapp.infrastructure.web.dto.event.EventResponse;
+import com.codeup.eventapp.domain.ports.in.events.CreateEventUseCase;
+import com.codeup.eventapp.domain.ports.in.events.DeleteEventUseCase;
+import com.codeup.eventapp.domain.ports.in.events.GetEventUseCase;
+import com.codeup.eventapp.domain.ports.in.events.ListDeletedEventsUseCase;
+import com.codeup.eventapp.domain.ports.in.events.ListEventsUseCase;
+import com.codeup.eventapp.domain.ports.in.events.RestoreEventUseCase;
+import com.codeup.eventapp.domain.ports.in.events.UpdateEventUseCase;
+import com.codeup.eventapp.infrastructure.web.dto.events.EventRequest;
+import com.codeup.eventapp.infrastructure.web.dto.events.EventResponse;
 import com.codeup.eventapp.infrastructure.web.response.AppResponse;
+import com.codeup.eventapp.infrastructure.mappers.events.EventDtoMapper;
 import com.codeup.eventapp.infrastructure.util.Trace;
 
 import io.swagger.v3.oas.annotations.Operation;

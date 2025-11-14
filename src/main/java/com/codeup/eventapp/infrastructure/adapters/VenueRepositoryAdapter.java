@@ -3,7 +3,7 @@ package com.codeup.eventapp.infrastructure.adapters;
 import com.codeup.eventapp.domain.model.Venue;
 import com.codeup.eventapp.domain.ports.out.VenueRepositoryPort;
 import com.codeup.eventapp.infrastructure.entities.VenueEntity;
-import com.codeup.eventapp.infrastructure.mappers.VenueMapper;
+import com.codeup.eventapp.infrastructure.mappers.venues.VenueMapper;
 import com.codeup.eventapp.infrastructure.repositories.JpaVenueRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
