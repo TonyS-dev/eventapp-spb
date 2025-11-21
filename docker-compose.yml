@@ -1,7 +1,7 @@
 services:
   # PostgresSQL Database service
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: postgres-db
     restart: unless-stopped
     environment:
@@ -35,7 +35,6 @@ services:
       SERVER_PORT: ${SERVER_PORT}
       SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER}
-      # Use container hostname for DB so the app can connect inside the compose network
       SPRING_DATASOURCE_URL: ${SPRING_DATABASE}:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
