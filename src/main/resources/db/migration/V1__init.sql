@@ -1,0 +1,15 @@
+CREATE TABLE venues (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    capacity INTEGER NOT NULL,
+    deleted BOOLEAN DEFAULT FALSE
+);
+CREATE TABLE events (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    location VARCHAR(255),
+    date TIMESTAMP,
+    description VARCHAR(1000),
+    deleted BOOLEAN DEFAULT FALSE
+);

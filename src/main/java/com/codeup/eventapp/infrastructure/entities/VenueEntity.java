@@ -1,26 +1,11 @@
 package com.codeup.eventapp.infrastructure.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import com.codeup.eventapp.infrastructure.entities.EventEntity;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.SoftDelete;
 import java.util.List;
 
-import org.hibernate.annotations.SoftDelete;
-
-/**
- * JPA Entity for Venue persistence.
- * This is an infrastructure concern and should not be used outside the infrastructure layer.
- */
 @Entity
 @Table(name = "venues")
 @SoftDelete
@@ -36,6 +21,6 @@ public class VenueEntity {
     @Column(nullable = false)
     private int capacity;
 
-    @OneToMany(mappedBy = "venue")
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<EventEntity> events;
 }

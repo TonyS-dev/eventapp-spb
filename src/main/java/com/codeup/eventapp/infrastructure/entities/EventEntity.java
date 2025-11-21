@@ -1,26 +1,11 @@
 package com.codeup.eventapp.infrastructure.entities;
 
+import com.codeup.eventapp.infrastructure.entities.VenueEntity;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.SoftDelete;
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.SoftDelete;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-/**
- * JPA Entity for Event persistence.
- * This is an infrastructure concern and should not be used outside the infrastructure layer.
- */
 @Entity
 @Table(name = "events")
 @SoftDelete
@@ -37,6 +22,7 @@ public class EventEntity {
     @Column(length = 1000)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue_id")
     private VenueEntity venue;
 }
