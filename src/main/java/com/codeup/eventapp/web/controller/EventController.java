@@ -84,7 +84,7 @@ public class EventController {
         @ApiResponse(responseCode = "409", description = "Event name already exists", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<AppResponse<EventResponse>> crear(
+    public ResponseEntity<AppResponse<EventResponse>> create(
         @Valid @RequestBody EventRequest req,
             UriComponentsBuilder uri) {
 
