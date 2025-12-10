@@ -1,5 +1,5 @@
 services:
-  # Servicio de base de datos postgres
+  # PostgreSQL Database service
   postgres:
     image: postgres:15
     container_name: postgres-db
@@ -20,7 +20,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Servicio de la aplicación Spring Boot
+  # SpringBoot Application service
   app:
     build:
       context: .
