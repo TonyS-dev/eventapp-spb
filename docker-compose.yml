@@ -1,17 +1,15 @@
 services:
-  # PostgreSQL Database service
+  # PostgresSQL Database service
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: postgres-db
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "5433:${DB_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -31,15 +29,17 @@ services:
         condition: service_healthy
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
-    env_file:
-      - .env
     environment:
-      # Use container hostname for DB so the app can connect inside the compose network
+      APP_NAME: ${APP_NAME}
+      LOGGING_LEVEL_SPRING: ${LOGGING_LEVEL_SPRING}
+      SERVER_PORT: ${SERVER_PORT}
+      SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER}
       SPRING_DATASOURCE_URL: ${SPRING_DATABASE}:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
-      SPRING_JPA_SHOW_SQL: "${SPRING_JPA_SHOW_SQL}"
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     restart: unless-stopped
 

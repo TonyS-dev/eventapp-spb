@@ -1,4 +1,4 @@
-# EventApp-SPB 🚀
+# EventApp-SPB 🚀  
 **Modern Event & Venue Management API**  
 _A robust Spring Boot application for managing events and venues, featuring RESTful APIs, PostgreSQL integration, and hot-reload development workflow._
 
@@ -8,11 +8,11 @@ _A robust Spring Boot application for managing events and venues, featuring REST
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)  
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue.svg)](https://www.postgresql.org/)  
 [![Build](https://img.shields.io/badge/build-Maven%203.9.0-yellow.svg)](https://maven.apache.org/)  
-[![Docker](https://img.shields.io/badge/Docker-ready-blue.svg)](https://www.docker.com/)
+[![Docker](https://img.shields.io/badge/Docker-ready-blue.svg)](https://www.docker.com/)  
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Live Demo 
 
 - **Local Development:** [http://localhost:8080](http://localhost:8080)
 
@@ -26,24 +26,24 @@ EventApp-SPB is a backend service for managing events and venues. It provides RE
 
 ## 🛠️ Tech Stack
 
-**Backend:**
-- Java 17
-- Spring Boot 3.5.7
-    - Spring Web, Spring Data JPA, Spring Validation, Spring DevTools
-- Lombok
+**Backend:**  
+- Java 17  
+- Spring Boot 3.5.7  
+  - Spring Web, Spring Data JPA, Spring Validation, Spring DevTools  
+- Lombok  
 - SpringDoc OpenAPI (Swagger UI)
 
-**Database & Infrastructure:**
-- PostgreSQL 15 (Dockerized)
+**Database & Infrastructure:**  
+- PostgreSQL 15 (Dockerized)  
 - Docker & Docker Compose
 
-**Testing & Quality:**
-- JUnit 5
+**Testing & Quality:**  
+- JUnit 5  
 - Spring Boot Test
 
-**DevOps & Deployment:**
-- Maven 3.9.0
-- Dockerfile & Docker Compose
+**DevOps & Deployment:**  
+- Maven 3.9.0  
+- Dockerfile & Docker Compose  
 - Hot-reload with DevTools and LiveReload
 
 ---
@@ -99,10 +99,10 @@ eventapp-spb/
    ```
 
 2. **Configure environment variables:**
-    - Copy `.env.example` to `.env` and fill in your secrets:
-      ```bash
-      cp .env.example .env
-      ```
+   - Copy `.env.example` to `.env` and fill in your secrets:
+     ```bash
+     cp .env.example .env
+     ```
 
 3. **Start development environment:**
    ```bash
@@ -240,4 +240,11 @@ docker build -t eventapp-spb .
 
 ---
 
+## 👤 Author / Contact
+
+- **Maintainer:** [Your Name or Organization]
+- **Contact:** [your.email@example.com]
+- _Feel free to reach out for questions or collaboration!_
+
+---
 
